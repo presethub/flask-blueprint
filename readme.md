@@ -32,14 +32,10 @@ Inside your project directory, edit or create `.env` file and then execute:
 ```bash
 source venv/bin/activate
 pip install -r requirements.txt
-
-cd app
-gunicorn -b 127.0.0.1:5000 main
-
-deactivate
+cd app && gunicorn -b 127.0.0.1:5000 main
 ```
 
-Default user is `admin@mail.com` and `secret` for the password.
+Default user is `admin@mail.com` and `secret` for the password. To exit from venv use `deactivate` command.
 
 ## License
 

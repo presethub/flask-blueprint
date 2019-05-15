@@ -3,7 +3,7 @@
 
 """Views."""
 
-from . import app
+from . import fa
 from flask import render_template, request, send_from_directory
 
 
