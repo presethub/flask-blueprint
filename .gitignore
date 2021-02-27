@@ -1,5 +1,7 @@
 # Python essentials
 __pycache__/
+.parcel-cache/
+.cache/
 .DS_Store
 .python-version
 *.py[cod]
@@ -26,6 +28,9 @@ MANIFEST
 Pipfile.lock
 .idea/
 .env
+.env.production
+.env.staging
+.env.testing
 
 # npm stuff
 /node_modules
@@ -33,3 +38,8 @@ package-lock.json
 yarn-error.log
 npm-debug.log
 yarn.lock
+
+# Project specific
+static/assets
+storage/logs/*
+!storage/logs/.gitkeep

@@ -1,43 +1,101 @@
 # Flask Blueprint
 
-[![](https://travis-ci.org/presethub/flask-boilerplate.svg?branch=master)](https://travis-ci.org/presethub/flask-boilerplate)
-[![](https://img.shields.io/badge/license-mit-green.svg?style=flat-square)](https://choosealicense.com/licenses/mit/)
-[![](https://img.shields.io/badge/python-3.6%20%7C%203.7-blue.svg?style=flat-square)]([https://git/](https://github.com/presethub/flask-boilerplate))
+Boilerplate proyek Flask menggunakan Blueprint. Gunakan template ini untuk membuat aplikasi Flask yang fleksibel.
 
-## What's in the box?
+## Kebutuhan Dasar
+- Python versi 3.7 atau yang lebih baru + Pipenv
+- NodeJS versi 12.8.1 atau yang lebih baru
+- NPM (sudah terpaket dengan Nodejs)
 
-- Flask 1.0.2 + TailwindCSS 1.0.1 + jQuery 3.4.1
-- Authentication using email or username.
+## Panduan Dasar
 
-## Quick Start
-
-At least you will need `Python >= 3.6` and `Nodejs >= 8.15`. For database backend, you can choose between
-`MariaDB >= 10.3` or `MySQL >= 5.7` or `PostgreSQL >= 9.6` or any other database engine that supported by Flask.
-
-### Create New Project
-
-You will need [degit](https://github.com/Rich-Harris/degit): `npm install -g degit`
+### 1. Clone proyek
+Nama folder `myapp` ganti sesuai dengan nama aplikasi yang akan dibuat.
 
 ```sh
-degit https://github.com/presethub/flask-boilerplate.git myproject
-cd myproject && python -m venv venv
+git clone https://github.com/riipandi/flask-blueprint myapp
 ```
 
-Don't forget to change `myproject` with your own.
-
-### Start Developing
-
-Inside your project directory, edit or create `.env` file and then execute:
-
-```bash
-source venv/bin/activate
-pip install -r requirements.txt
-cd app && gunicorn -b 127.0.0.1:5000 main
+### 2. Buat environment dan install dependensi Python menggunakan pipenv
+```sh
+cd myapp
+pipenv install
+pipenv shell
 ```
 
-Default user is `admin@mail.com` and `secret` for the password. To exit from venv use `deactivate` command.
+### 3. Compile asset javascript dan css
+```sh
+npm install --no-optional --no-audit
+npm run build
+```
+
+### 4. Jalankan aplikasi
+```sh
+# Persiapkan file konfigurasi (sesuaikan parameternya)
+cp .env.example .env
+
+# Menjalankan menggunakan flask
+export FLASK_APP=app
+flask run
+```
+
+Cara lain menjalankan aplikasi (_disarankan saat mode production_):
+
+```sh
+# Jika ingin menjalankan menggunakan gunicorn
+gunicorn -c config/gunicorn.py wsgi
+
+# Jika ingin menjalankan menggunakan uwsgi
+uwsgi --http-socket :5000 --plugin python3 --module wsgi:application
+```
+
+> Penting: pastikan selalu mengaktifkan `pipenv shell` saat development!
+
+---
+
+Aplikasi akan berjalan di url berikut:
+
+- Halaman index : http://localhost:5000
+- Halaman API : http://localhost:5000/api
+- Contoh halaman : http://localhost:5000/hello
+- Cek koneksi dabase : http://localhost:5000/testdb
+
+## Deploy ke Heroku
+
+Boilerplate ini sudah dapat di-deploy ke Heroku, hanya perlu sedikit penyesuaian seperti berikut:
+
+```sh
+# Konfigurasi runtime di Heroku
+heroku buildpacks:set heroku/python
+heroku buildpacks:set heroku/nodejs
+
+# Heroku environment variable
+heroku config:set WEB_CONCURRENCY=3
+heroku config:set APP_HOST=127.0.0.1
+heroku config:set APP_PORT=5000
+heroku config:set APP_KEY=secretkey123
+heroku config:set APP_ENV=production
+heroku config:set APP_DEBUG=False
+heroku config:set DB_TYPE=sqlite
+heroku config:set DB_PORT=5432
+heroku config:set DB_HOST=127.0.0.1
+heroku config:set DB_DATABASE=flask_app
+heroku config:set DB_USERNAME=postgres
+heroku config:set DB_PASSWORD=secret
+heroku config:set MAIL_USERNAME=
+heroku config:set MAIL_PASSWORD=
+heroku config:set MAIL_HOST=smtp.mailtrap.io
+heroku config:set MAIL_PORT=587
+
+# Deploy ke Heroku
+git push heroku master
+```
+
+> Pastikan `heroku-cli` sudah terinstal, panduan instalasi `heroku-cli` dapat ditemukan [disini](https://devcenter.heroku.com/articles/heroku-cli).
 
 ## License
+
+Copyright 2019-2020 - Aris Ripandi
 
 Licensed under the terms of [MIT License][choosealicense]. See [license file](./license.txt) for more information.
 
